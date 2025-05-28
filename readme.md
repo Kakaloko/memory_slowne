@@ -5,3 +5,12 @@
 #statystyka wygranych
 #statystyka błędów
 #jedna zaproponowana przez grupę
+
+
+tryb gry na czas:
+użytkownik wybiera ile potrzebuje czasu na zapamiętanie
+punkty są przyznawane za poprawne odp
+
+tryb gry na ilość:
+użytkownik wybiera ile słów ma być wyświetlone
+punkty są przyznawane za poprawne odp
