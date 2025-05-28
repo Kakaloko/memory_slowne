@@ -2,8 +2,12 @@ import random
 import time
 import os
 
-# Lista słów
-lista = ["laptop", "lampa", "telefon", "okno", "zegarek", "butelka", "szalik", "sok", "plecak", "mysz"]
+tryb_gry = input("Wybierz tryb(easy, normal, hard)")
+
+plik = open("../data/"+ tryb_gry +"_level.csv","r")
+lista = plik.readline().split(",")
+plik.close()
+
 
 # Losowanie 5 słów
 lista_do_wyswietlenia = random.sample(lista, 5)
