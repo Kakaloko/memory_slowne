@@ -1,8 +1,11 @@
 import random
 import time
 import os
+import csv
 
 # Lista słów
+with open("data/easy_level.csv", newline=" ") as csvfile:
+    list = csvfile.reader()
 lista = ["laptop", "lampa", "telefon", "okno", "zegarek", "butelka", "szalik", "sok", "plecak", "mysz"]
 
 # Losowanie 5 słów
