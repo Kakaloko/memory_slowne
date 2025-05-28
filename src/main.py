@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import random
 import time
 import os
@@ -17,3 +18,6 @@ time.sleep(10)
 
 # Wyczyść konsolę
 os.system('cls')  # Dla Windows
+=======
+print("Hello World")
+>>>>>>> f9026a8e26d443dc1516e3c3169fda9d14a0dcf4
