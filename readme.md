@@ -34,7 +34,7 @@ punkty są przyznawane za poprawne odp
 
 ad 4:
 
-utworzeine nowego pliku w którym będzie zapisywana ilość gier i ilość zwycięstw, można też policzyć % wygranych
+utworzeine nowego pliku w którym będzie zapisywana ilość gier i ilość punktów, można też policzyć ile średnio zdobywa się punktów w jednej grze
 
 tylko pytanie czy trzeba to resetować?
 
