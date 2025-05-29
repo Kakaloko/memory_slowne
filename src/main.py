@@ -12,7 +12,6 @@ def tryb_gry_na_czas(lista_slow):
     for i in range(czas, 0, -1):
         print(f"\rPozostały czas {i} s do rozpoczęcia gry", end='', flush=True)
         time.sleep(1)
-   # print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
     print("\n" * 15)
     lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
     punkty = 0
@@ -22,7 +21,6 @@ def tryb_gry_na_czas(lista_slow):
             punkty += 1
         else:
             bledy += 1
-    #punkty = sum(1 for slowo in lista_wpisana if slowo in lista_do_wyswietlenia) # inny sposób na zliczanie pkt
     print("Koniec gry!")
     return punkty, bledy
 
@@ -34,7 +32,6 @@ def tryb_gry_na_ilosc(lista_slow):
     for i in range(10, 0, -1):
         print(f"\rPozostały czas {i} s do rozpoczęcia gry", end='', flush=True)
         time.sleep(1)
-    # print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
     print("\n" * 15)
     lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
     punkty = 0
@@ -44,21 +41,21 @@ def tryb_gry_na_ilosc(lista_slow):
             punkty += 1
         else:
             bledy += 1
-    # punkty = sum(1 for slowo in lista_wpisana if slowo in lista_do_wyswietlenia) # inny sposób na zliczanie pkt
     print("Koniec gry!")
     return punkty, bledy
 
-def tryb_gry_do_pierwszego_bledu(lista_slow): #na razie nie działa
+
+
+def tryb_gry_do_pierwszego_bledu(lista_slow): #gra się nie kończy jeśli gracz poda mniejszą liczbę słów
     punkty = 0
     bledy = 0
     i = 1
-    while (bledy != 0): #inna pętla
+    while True:
         lista_do_wyswietlenia = random.sample(lista_slow, i)
         print("Wylosowane słowa:", lista_do_wyswietlenia)
-        for j in range(10, 0, -1):
+        for j in range(3 * i, 0, -1):
             print(f"\rPozostały czas {j} s do rozpoczęcia gry", end='', flush=True)
             time.sleep(1)
-        # print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
         print("\n" * 15)
         lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
         for slowo in lista_wpisana:
@@ -66,10 +63,40 @@ def tryb_gry_do_pierwszego_bledu(lista_slow): #na razie nie działa
                 punkty += 1
             else:
                 bledy += 1
-        # punkty = sum(1 for slowo in lista_wpisana if slowo in lista_do_wyswietlenia) # inny sposób na zliczanie pkt
+        i += 1
+        if (bledy > 0):
+            break;
+    print("Koniec gry!")
+    return punkty
+
+def tryb_gry_do_pierwszego_bledu1(lista_slow): #gra się kończy jeśli gracz poda mniejszą liczbę słów
+    punkty = 0
+    bledy = 0
+    i = 1
+    while True:
+        lista_do_wyswietlenia = random.sample(lista_slow, i)
+        print("Wylosowane słowa:", lista_do_wyswietlenia)
+        for j in range(3 * i, 0, -1):
+            print(f"\rPozostały czas {j} s do rozpoczęcia gry", end='', flush=True)
+            time.sleep(1)
+        print("\n" * 15)
+        lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
+        if (len(lista_wpisana) < len(lista_do_wyswietlenia)):
+            print("Podałeś za mało słów!")
+            break
+        for slowo in lista_wpisana:
+            if slowo in lista_do_wyswietlenia:
+                punkty += 1
+            else:
+                bledy += 1
+            if (bledy > 0):
+                print("Pojawił się błąd!")
+                break
         i += 1
     print("Koniec gry!")
     return punkty
+
+
 
 lista_latwych = ["laptop", "lampa", "telefon", "okno", "zegarek", "butelka", "szalik", "sok", "plecak", "mysz", "garnek", "długopis",
                  "nożyczki", "marker", "masło", "ryż", "makaron", "poduszka", "klapki", "gitara", "jabłko", "portfel", "słoik", "czajnik"]
@@ -108,35 +135,21 @@ def main():
         match tryb_gry:
             case "na czas":
                 punkty, bledy = tryb_gry_na_czas(lista)
+                print("Liczba zdobytych punktów: ", punkty)
+                print("Liczba błędów: ", bledy)
                 break
             case "na ilość":
                 punkty, bledy = tryb_gry_na_ilosc(lista)
+                print("Liczba zdobytych punktów: ", punkty)
+                print("Liczba błędów: ", bledy)
                 break
             case "do pierwszego błędu":
-                punkty, bledy = tryb_gry_do_pierwszego_bledu(lista)
+                punkty = tryb_gry_do_pierwszego_bledu1(lista)
+                print("Liczba zdobytych punktów: ", punkty)
                 break
             case _:
                 print("Niepoprawny tryb gry. Wpisz ponownie.")
-    print("Liczba zdobytych punktów: ", punkty)
-    print("Liczba błędów: ", bledy)
+
 
 if __name__ == "__main__":
     main()
-
-#pierwsza wersja:
-"""
-lista_do_wyswietlenia = random.sample(lista_latwych, 5)
-print("Wylosowane słowa:", lista_do_wyswietlenia)
-
-for i in range(3, 0, -1):
-    print(f"\rZniknie za {i} sekund...", end='', flush=True)
-    time.sleep(1)
-
-print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
-print("\n" * 10)
-lista_wpisana = input().split(" ")
-punkty = 0
-for slowo in lista2:
-    if slowo in lista_do_wyswietlenia:
-        punkty += 1
-print(punkty)"""
