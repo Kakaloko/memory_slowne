@@ -52,7 +52,7 @@ nowy tryb gry polegający na wyświetlaniu coraz większej ilości słów
 
 np najpierw jedno słowo do zapamiętania i wpisania, potem 2, 3 itd
 
-gra się kończy w momencie pierwszego błędu
+gra się kończy w momencie pierwszego błędu (pytanie czy gra się kończy jeśli gracz wpisze mniejszą liczbę słów niż było wyświetlone)
 
 punkty są przyznawane za poprawne odp i sumowane
 
