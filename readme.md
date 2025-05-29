@@ -23,3 +23,8 @@ nowy tryb gry polegający na wyświetlaniu coraz większej ilości słów
 np najpierw jedno słowo do zapamiętania i wpisania, potem 2, 3 itd
 gra się kończy w momencie pierwszego błędu
 punkty są przyznawane za poprawne odp i sumowane
+
+podizał pracy
+Szymon #1, #2, #6
+Bartek - #2, #4
+Hubert - implementacja gui, #5
