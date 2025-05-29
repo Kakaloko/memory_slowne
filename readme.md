@@ -15,6 +15,10 @@ tryb gry na ilość:
 użytkownik wybiera ile słów ma być wyświetlone
 punkty są przyznawane za poprawne odp
 
+ad 4:
+utworzeine nowego pliku w którym będzie zapisywana ilość gier i ilość zwycięstw, można też policzyć % wygranych
+tylko pytanie czy trzeba to resetować?
+
 ad 5:
 ile błędnych słów zostało wpisanych
 
