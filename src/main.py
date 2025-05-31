@@ -35,22 +35,17 @@ class root(tk.Tk):
         option_button.pack()
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-
     def statistics_window(self):
         self.clear()
-        file_stats = open("../data/stats.txt")
-        stats = []
-
-        for line in file_stats:
-            stats.append(line.split(","))
-        file_stats.close()
+        with open("../data/stats.txt", encoding="utf-8") as file_stats:
+            stats = [line.strip().split(",") for line in file_stats]
 
         self.frame = tk.Frame(self)
         self.frame.configure(bg="#333446")
 
-        table_stats = stats_table(self.frame, stats, len(stats),2)
+        table_stats = stats_table(self.frame, stats, len(stats), 2)
 
-        back_button = ttk.Button(self, text="Wróć", command= self.menu_window)
+        back_button = ttk.Button(self, text="Wróć", command=self.menu_window)
         back_button.pack(anchor=tk.NW)
 
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
