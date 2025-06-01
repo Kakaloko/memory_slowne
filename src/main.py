@@ -5,7 +5,7 @@ import os
 tryb_gry = input("Wybierz tryb(easy, normal, hard)")
 
 plik = open("../data/"+ tryb_gry +"_level.csv","r")
-lista = plik.readline().split(",")
+lista = plik.readline().split(", ")
 plik.close()
 
 print("wybierz tryb gry: \n A <-- gra na czas \n B <-- gra na ilosc")
@@ -13,8 +13,6 @@ print("wybierz tryb gry: \n A <-- gra na czas \n B <-- gra na ilosc")
 Wybor = input("Wybierz tryb A lub B : ")
 if Wybor == "A":
     liczba_s = int(input("Wybierz ile chcesz miec czasu na zadanie : "))
-    lista = ["laptop", "lampa", "telefon", "okno", "zegarek", "butelka", "szalik", "sok", "plecak", "mysz"]
-
     lista_do_wyswietlenia = random.sample(lista, 5)
     print("Wylosowane słowa:", lista_do_wyswietlenia)
     for i in range(liczba_s, 0, -1):
