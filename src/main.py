@@ -1,33 +1,73 @@
+
 import random
 import time
-import os
+from operator import contains
 
-tryb_gry = input("Wybierz tryb(easy, normal, hard)")
 
-plik = open("../data/"+ tryb_gry +"_level.csv","r")
-lista = plik.readline().split(", ")
-plik.close()
+def tworzenie_listy():
+    tryb_gry = input("Wybierz tryb (easy, normal, hard) lub 'exit' by zakończyć: ")
 
-print("wybierz tryb gry: \n A <-- gra na czas \n B <-- gra na ilosc")
+    if tryb_gry == "exit":
+        print("Wyjście z programu")
+        return None
 
-Wybor = input("Wybierz tryb A lub B : ")
-if Wybor == "A":
-    liczba_s = int(input("Wybierz ile chcesz miec czasu na zadanie : "))
-    lista_do_wyswietlenia = random.sample(lista, 5)
-    print("Wylosowane słowa:", lista_do_wyswietlenia)
-    for i in range(liczba_s, 0, -1):
-        print(f"\rZniknie za {i} sekund...", end='', flush=True)
-        time.sleep(1)
+    sciezka = f"../data/{tryb_gry}_level.csv"
 
-# Czyszczenie linii i wiadomość końcowa
-print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
-print("\n" * 10)
-lista2 = input().split(" ")
-punkty = 0
-for slowo in lista2:
-    if slowo in lista_do_wyswietlenia:
-        punkty += 1
-print(punkty)
+    try:
+        with open(sciezka, "r") as plik:
+            lista = plik.readline().strip().split(", ")
+            return lista  # Zwracamy listę tylko jeśli plik istnieje
+    except FileNotFoundError:
+        print("Nie znaleziono pliku dla tego trybu.")
+        return None
+
+
+def wybor_trybu(lista):
+    print("wybierz tryb gry: \n A <-- gra na czas \n B <-- gra na ilosc \n cofnij")
+    Wybor = input("Wybierz tryb A, B lub cofnij : ")
+
+    if Wybor == "A":
+        liczba_SEC = int(input("Wybierz ile chcesz miec czasu na zadanie (w sekundach) : "))
+        lista_do_wyswietlenia = random.sample(lista, 5)
+        print("Wylosowane słowa:", lista_do_wyswietlenia)
+        for i in range(liczba_SEC, 0, -1):
+            print(f"\rZniknie za {i} sekund...", end='', flush=True)
+            time.sleep(1)
+
+    elif Wybor == "B":
+        liczba_SLOW = int(input("Wybierz ile słow chcesz wyswietlac do zapamietania : "))
+        lista_do_wyswietlenia = random.sample(lista, liczba_SLOW)
+        print("Wylosowane słowa:", lista_do_wyswietlenia)
+        for i in range(10, 0, -1):
+            print(f"\rZniknie za {i} sekund...", end='', flush=True)
+            time.sleep(1)
+
+    elif Wybor == "cofnij":
+        print("Powrot do wyboru poziomu trudnosci")
+        wybor_trybu(tworzenie_listy())
+
+    else:
+        print("Nie ma takiego trybu gry")
+
+    print("\r" + " " * 30 + "\rCzas minął!", end='', flush=True)
+    print("\n" * 10)
+    lista2 = input().split(" ")
+    punkty = 0
+    for slowo in lista2:
+        if slowo in lista_do_wyswietlenia:
+            punkty += 1
+    print(punkty)
+    wybor_trybu(lista)
+
+
+
+def main():
+    wybor_trybu(tworzenie_listy())
+if __name__ == "__main__":
+    main()
+
+
+
 
 
 
