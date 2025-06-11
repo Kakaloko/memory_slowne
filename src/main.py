@@ -1,7 +1,6 @@
 import random
 import time
 import os
-#from asyncio.unix_events import can_use_pidfd
 
 
 def tryb_gry_na_czas(lista_slow):
@@ -45,31 +44,7 @@ def tryb_gry_na_ilosc(lista_slow):
     return punkty, bledy
 
 
-
-def tryb_gry_do_pierwszego_bledu(lista_slow): #gra się nie kończy jeśli gracz poda mniejszą liczbę słów
-    punkty = 0
-    bledy = 0
-    i = 1
-    while True:
-        lista_do_wyswietlenia = random.sample(lista_slow, i)
-        print("Wylosowane słowa:", lista_do_wyswietlenia)
-        for j in range(3 * i, 0, -1):
-            print(f"\rPozostały czas {j} s do rozpoczęcia gry", end='', flush=True)
-            time.sleep(1)
-        print("\n" * 15)
-        lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
-        for slowo in lista_wpisana:
-            if slowo in lista_do_wyswietlenia:
-                punkty += 1
-            else:
-                bledy += 1
-        i += 1
-        if (bledy > 0):
-            break;
-    print("Koniec gry!")
-    return punkty
-
-def tryb_gry_do_pierwszego_bledu1(lista_slow): #gra się kończy jeśli gracz poda mniejszą liczbę słów
+def tryb_gry_do_pierwszego_bledu(lista_slow): #gra się kończy jeśli gracz poda mniejszą liczbę słów
     punkty = 0
     bledy = 0
     i = 1
@@ -144,7 +119,7 @@ def main():
                 print("Liczba błędów: ", bledy)
                 break
             case "do pierwszego błędu":
-                punkty = tryb_gry_do_pierwszego_bledu1(lista)
+                punkty = tryb_gry_do_pierwszego_bledu(lista)
                 print("Liczba zdobytych punktów: ", punkty)
                 break
             case _:
