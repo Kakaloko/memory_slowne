@@ -42,7 +42,7 @@ def tryb_gry_na_ilosc(lista_slow):
     print("Koniec gry!")
     return punkty, bledy
 
-def tryb_gry_do_pierwszego_bledu1(lista_slow):  # gra się kończy jeśli gracz poda mniejszą liczbę słów
+def tryb_gry_do_pierwszego_bledu(lista_slow):  # gra się kończy jeśli gracz poda mniejszą liczbę słów
     punkty = 0
     bledy = 0
     i = 1
@@ -83,7 +83,7 @@ def tworzenie_listy():
     try:
         with open(sciezka, "r") as plik:
             lista = plik.readline().strip().split(", ")
-            return lista  # Zwracamy listę tylko jeśli plik istnieje
+            return lista  
     except FileNotFoundError:
         print("Nie znaleziono pliku dla tego trybu.")
         tworzenie_listy()
@@ -95,22 +95,11 @@ def wybor_trybu(lista):
     if Wybor == "A":
         Wynik1 = tryb_gry_na_czas(lista)
         print("Liczba punktów : ", Wynik1[0],"Liczba błędów: ", Wynik1[1] )
-        # liczba_SEC = int(input("Wybierz ile chcesz miec czasu na zadanie (w sekundach) : "))
-        # lista_do_wyswietlenia = random.sample(lista, 5)
-        # print("Wylosowane słowa:", lista_do_wyswietlenia)
-        # for i in range(liczba_SEC, 0, -1):
-        #     print(f"\rZniknie za {i} sekund...", end='', flush=True)
-        #     time.sleep(1)
 
     elif Wybor == "B":
         Wynik2 = tryb_gry_na_ilosc(lista)
         print("Liczba punktów : ", Wynik2[0], "Liczba błędów: ", Wynik2[1])
-        # liczba_SLOW = int(input("Wybierz ile słow chcesz wyswietlac do zapamietania : "))
-        # lista_do_wyswietlenia = random.sample(lista, liczba_SLOW)
-        # print("Wylosowane słowa:", lista_do_wyswietlenia)
-        # for i in range(10, 0, -1):
-        #     print(f"\rZniknie za {i} sekund...", end='', flush=True)
-        #     time.sleep(1)
+        
     elif Wybor == "C":
         Wynik3 = tryb_gry_do_pierwszego_bledu1(lista)
         print("Liczba punktów : ", Wynik3)
