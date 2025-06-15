@@ -153,7 +153,7 @@ class root(tk.Tk):
     def write_words(self):
         self.clear()
         
-        entry_label = ttk.Label(self.frame,  text="Podane słowa", style= "TButton")
+        entry_label = ttk.Label(self.frame,  text="Wpisz słowa", style= "TButton")
         entry_label.pack()
 
         self.answer = tk.StringVar()
