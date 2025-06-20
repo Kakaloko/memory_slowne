@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from tkinter import *
+from tkinter import ttk
 import random
 import time
 from operator import contains
@@ -6,6 +7,200 @@ import os
 
 STATS_FILE = "statystyki.txt"
 
+class root(tk.Tk):
+    def __init__(self, text="Memory słowne"):
+        super().__init__()
+        self.title(text)
+        self.geometry("600x600")
+        self.configure(bg="#333446")
+        ttk.Style().configure("TButton", 
+                                padding=[10,5,10,5],
+                                margins=[20,10,20,10],
+                                background="#7F8CAA",
+                                foreground = "black",
+                                borderwidth=2,
+                                font=("Impact", 25,))
+        self.menu_window()
+        
+        
+    def menu_window(self):
+        self.clear()
+
+        self.frame = tk.Frame(self)
+        self.frame.configure(bg="#333446")
+
+        play_button = ttk.Button(self.frame, text="Graj", style= "TButton",command=self.game_window,)
+        play_button.pack()
+
+
+        statistics_button = ttk.Button(self.frame, text="Statystyki", command= self.statistics_window)
+        statistics_button.pack()
+      
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def statistics_window(self):
+        self.clear()
+        with open("../data/stats.txt", encoding="utf-8") as file_stats:
+            stats = [line.strip().split(",") for line in file_stats]
+
+        self.frame = tk.Frame(self)
+        self.frame.configure(bg="#333446")
+
+        table_stats = stats_table(self.frame, stats, len(stats), 2)
+
+        back_button = ttk.Button(self, text="Wróć", command=self.menu_window)
+        back_button.pack(anchor=tk.NW)
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_window(self):
+        self.clear()
+       
+
+        mode1_button = ttk.Button(self.frame, text="Na Czas ⏰", style= "TButton",command=self.game_choose_time,)
+        mode1_button.pack()
+
+
+        mode2_button = ttk.Button(self.frame, text="Na Ilość 📝", command= self.game_choose_amount)
+        mode2_button.pack()
+       
+        mode3_button = ttk.Button(self.frame, text="Do pierwszego błedu ❌", style= "TButton",command=self.game_mistake,)
+        mode3_button.pack()
+
+        
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_choose_amount(self):
+        self.clear()
+       
+        self.amount = tk.IntVar()
+
+        entry_label = ttk.Label(self.frame,  text="Wybierz ilość słów", style= "TButton", width= 20)
+        entry_label.pack()
+
+        entry = ttk.Entry(self.frame, textvariable= self.amount, style= "TButton", font=(50), width= 20)
+        entry.pack()
+
+        self.level_list = ["Łatwy", "Łatwy", "Średni", "Trudny"] #Nie wiem czemu musi być tak ale dziąła dobrze xD
+        self.level = tk.StringVar(value="Łatwy")
+        level_menu = ttk.OptionMenu(self.frame, self.level , *self.level_list, style="TButton")
+
+        level_menu.pack()
+
+        ok_button = ttk.Button(self.frame, text="OK", command= self.game_amount)
+        ok_button.pack()
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_amount(self):
+        self.level = str(self.level.get())
+        self.amount = int(self.amount.get())
+
+        self.clear()
+
+        
+        words = ttk.Label(self.frame,  text="tu będą słowa", style= "TButton")
+        words.pack()
+        
+        ok_button = ttk.Button(self.frame, text="OK", command= self.write_words)
+        ok_button.pack()
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_choose_time(self, time = 5):
+        self.clear()
+        self.time = tk.IntVar()
+
+        entry_label = ttk.Label(self.frame,  text="Wybierz czas w sekundach", style= "TButton")
+        entry_label.pack()
+
+        entry = ttk.Entry(self.frame, textvariable= self.time, style= "TButton", font=(20))
+        entry.pack()
+
+        self.level_list = ["Łatwy", "Łatwy", "Średni", "Trudny"] #Nie wiem czemu musi być tak ale dziąła dobrze xD
+        self.level = tk.StringVar(value="Łatwy")
+        level_menu = ttk.OptionMenu(self.frame, self.level , *self.level_list, style="TButton")
+        level_menu.pack()
+
+        ok_button = ttk.Button(self.frame, text="OK", command= self.game_time)
+        ok_button.pack()
+
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_time(self):
+        self.clear()
+        self.level = str(self.level.get())
+        time_left = int(self.time.get())
+
+        words = ttk.Label(self.frame,  text="tu będą słowa", style= "TButton")
+        words.pack()
+        time_label = ttk.Label(self.frame, text=str(time_left), style= "TButton")
+        time_label.pack()
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        while True:
+            if time_left <= 0:
+                self.write_words()
+                break
+            else:
+                time_label.config(text= time_left)
+                self.update()
+                time.sleep(1)
+                time_left -= 1
+
+    def game_mistake(self):
+        self.clear()
+        
+ 
+
+    def write_words(self):
+        self.clear()
+        
+        entry_label = ttk.Label(self.frame,  text="Wpisz słowa", style= "TButton")
+        entry_label.pack()
+
+        self.answer = tk.StringVar()
+
+        entry = ttk.Entry(self.frame, textvariable= self.answer, style= "TButton", font=(20))
+        entry.pack()
+
+        ok_button = ttk.Button(self.frame, text="OK", command= self.game_result)
+        ok_button.pack()
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    def game_result(self):
+        self.clear()
+        
+        result_label= ttk.Label(self.frame,  text="Wynik", style= "TButton")
+        result_label.pack()
+        
+        back_button = ttk.Button(self.frame, text="Wróć", command=self.menu_window)
+        back_button.pack()
+
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    def clear(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.frame = tk.Frame(self)
+        self.frame.configure(bg="#333446")
+
+class stats_table:
+    def __init__(self, root, list, rows, columns):
+        
+        # code for creating table
+        for i in range(rows):
+            for j in range(columns):
+                
+                self.e = tk.Label(root, width=20, 
+                                  text=list[i][j].strip(),
+                                fg='#EAEFEF', 
+                                bg='#333446',
+                                font=('Arial',16,'bold'))
+                
+                self.e.grid(row=i, column=j)
+                
 def zapisz_statystyki(punkty, bledy):
     suma_punktow = punkty
     suma_bledow = bledy
@@ -46,76 +241,22 @@ def zapisz_statystyki(punkty, bledy):
     print(f"- Średnie punkty na grę: {srednie_punkty:.2f}")
     print(f"- Średnie błędy na grę: {srednie_bledy:.2f}")
 
+def tworzenie_listy():
+    tryb_gry = input("Wybierz tryb (easy, normal, hard) lub 'exit' by zakończyć: ").lower()
 
+    if tryb_gry == "exit":
+        print("Wyjście z programu")
+        return None
 
+    sciezka = f"../data/{tryb_gry}_level.csv"
 
-def tryb_gry_na_czas(lista_slow):
-    czas = int(input("Podaj czas potrzebny na zapamiętanie 5 słów: "))
-    lista_do_wyswietlenia = random.sample(lista_slow, 5)
-    lista_do_wyswietlenia = [s.lower() for s in lista_do_wyswietlenia]
-    print("Wylosowane słowa:", lista_do_wyswietlenia)
-    for i in range(czas, 0, -1):
-        print(f"\rPozostały czas {i} s do rozpoczęcia gry", end='', flush=True)
-        time.sleep(1)
-    print("\n" * 15)
-    lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
-    punkty = 0
-    bledy = 0
-    for slowo in lista_wpisana:
-        if slowo in lista_do_wyswietlenia:
-            punkty += 1
-        else:
-            bledy += 1
-    print("Koniec gry!")
-    return punkty, bledy
-
-def tryb_gry_na_ilosc(lista_slow):
-    ilosc = int(input("Podaj ile słów chcesz zapamiętać w ciągu 10s: "))
-    lista_do_wyswietlenia = random.sample(lista_slow, ilosc)
-    print("Wylosowane słowa:", lista_do_wyswietlenia)
-    for i in range(10, 0, -1):
-        print(f"\rPozostały czas {i} s do rozpoczęcia gry", end='', flush=True)
-        time.sleep(1)
-    print("\n" * 15)
-    lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
-    punkty = 0
-    bledy = 0
-    for slowo in lista_wpisana:
-        if slowo in lista_do_wyswietlenia:
-            punkty += 1
-        else:
-            bledy += 1
-    print("Koniec gry!")
-    return punkty, bledy
-
-def tryb_gry_do_pierwszego_bledu1(lista_slow):  # gra się kończy jeśli gracz poda mniejszą liczbę słów
-    punkty = 0
-    bledy = 0
-    i = 1
-    while True:
-        lista_do_wyswietlenia = random.sample(lista_slow, i)
-        print("Wylosowane słowa:", lista_do_wyswietlenia)
-        for j in range(3 * i, 0, -1):
-            print(f"\rPozostały czas {j} s do rozpoczęcia gry", end='', flush=True)
-            time.sleep(1)
-        print("\n" * 15)
-        lista_wpisana = [s.lower() for s in input("Wpisz zapamiętane słowa, oddzielone spacją: ").split()]
-        if (len(lista_wpisana) < len(lista_do_wyswietlenia)):
-            print("Podałeś za mało słów!")
-            break
-        for slowo in lista_wpisana:
-            if slowo in lista_do_wyswietlenia:
-                punkty += 1
-            else:
-                bledy += 1
-            if (bledy > 0):
-                print("Pojawił się błąd!")
-                break
-        i += 1
-    print("Koniec gry!")
-    return punkty
-
-
+    try:
+        with open(sciezka, "r", encoding="utf-8") as plik:
+            lista = plik.readline().strip().split(", ")
+            return lista
+    except FileNotFoundError:
+        print("Nie znaleziono pliku dla tego trybu.")
+        tworzenie_listy()
 
 def tworzenie_listy():
     tryb_gry = input("Wybierz tryb (easy, normal, hard) lub 'exit' by zakończyć: ").lower()
@@ -135,48 +276,6 @@ def tworzenie_listy():
         tworzenie_listy()
 
 
-def wybor_trybu(lista):
-    print("wybierz tryb gry: \n A <-- gra na czas \n B <-- gra na ilość \n C <-- gra do pierwszego błędu \n cofnij")
-    wybor = input("Wybierz tryb A, B, C lub cofnij : ").lower()
-    if wybor == "a":
-        wynik1 = tryb_gry_na_czas(lista)
-        print("Liczba punktów : ", wynik1[0],"Liczba błędów: ", wynik1[1] )
-        zapisz_statystyki(wynik1[0], wynik1[1])
-
-    elif wybor == "b":
-        wynik2 = tryb_gry_na_ilosc(lista)
-        print("Liczba punktów : ", wynik2[0], "Liczba błędów: ", wynik2[1])
-        zapisz_statystyki(wynik2[0], wynik2[1])
-
-    elif wybor == "c":
-        wynik3 = tryb_gry_do_pierwszego_bledu1(lista)
-        print("Liczba punktów : ", wynik3)
-
-    elif wybor == "cofnij":
-        print("Powrot do wyboru poziomu trudności")
-        wybor_trybu(tworzenie_listy())
-
-    else:
-        print("Nie ma takiego trybu gry")
-
-def main():
-    while True:
-        lista_slow = tworzenie_listy()
-        if lista_slow is None:
-            break
-        wybor_trybu(lista_slow)
-
-        decyzja = input("\nCzy chcesz zagrać ponownie? (tak/nie): ").lower()
-        if decyzja != "tak":
-            break
-
-    # Po zakończeniu całej sesji
-    decyzja_stat = input("\nCzy chcesz otworzyć plik ze statystykami? (tak/nie): ").lower()
-    if decyzja_stat == "tak":
-        try:
-            os.system(f'notepad {STATS_FILE}')  # Windows
-        except Exception as e:
-            print("Nie udało się otworzyć pliku:", e)
-
 if __name__ == "__main__":
-    main()
+    root_ = root()
+    root.mainloop()

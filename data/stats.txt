@@ -1,0 +1,5 @@
+Rozegrane rundy,0
+Wygrane,0
+Przegrane,0
+Błędy,0
+Perfekcyjne rundy,0
