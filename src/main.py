@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 import random
 import time
@@ -40,6 +40,7 @@ class root(tk.Tk):
 
     def statistics_window(self):
         self.clear()
+
         with open("../data/stats.txt", encoding="utf-8") as file_stats:
             stats = [line.strip().split(",") for line in file_stats]
 
@@ -99,8 +100,10 @@ class root(tk.Tk):
 
         self.clear()
 
-        
-        words = ttk.Label(self.frame,  text="tu będą słowa", style= "TButton")
+        self.lista_slow = tworzenie_listy(self.level, self.amount)
+
+
+        words = ttk.Label(self.frame,  text=self.lista_slow, font=(10))
         words.pack()
         
         ok_button = ttk.Button(self.frame, text="OK", command= self.write_words)
@@ -134,7 +137,9 @@ class root(tk.Tk):
         self.level = str(self.level.get())
         time_left = int(self.time.get())
 
-        words = ttk.Label(self.frame,  text="tu będą słowa", style= "TButton")
+        self.lista_slow = tworzenie_listy(self.level)
+
+        words = ttk.Label(self.frame,  text=self.lista_slow, font=(10))
         words.pack()
         time_label = ttk.Label(self.frame, text=str(time_left), style= "TButton")
         time_label.pack()
@@ -172,7 +177,8 @@ class root(tk.Tk):
 
     def game_result(self):
         self.clear()
-        
+        porownanie(self.lista_slow, self.answer)
+
         result_label= ttk.Label(self.frame,  text="Wynik", style= "TButton")
         result_label.pack()
         
@@ -180,6 +186,7 @@ class root(tk.Tk):
         back_button.pack()
 
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        
     def clear(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -241,31 +248,22 @@ def zapisz_statystyki(punkty, bledy):
     print(f"- Średnie punkty na grę: {srednie_punkty:.2f}")
     print(f"- Średnie błędy na grę: {srednie_bledy:.2f}")
 
-def tworzenie_listy():
-    tryb_gry = input("Wybierz tryb (easy, normal, hard) lub 'exit' by zakończyć: ").lower()
 
-    if tryb_gry == "exit":
-        print("Wyjście z programu")
-        return None
+def porownanie(wyswietlone, odpowiedz):
+    #todo żeby zwracała informacje o ilości błedów i dane do zapisania do statystyk a najlepiej żeby sama wywoływała zapisywanie statystyk
+    return None
 
-    sciezka = f"../data/{tryb_gry}_level.csv"
 
-    try:
-        with open(sciezka, "r", encoding="utf-8") as plik:
-            lista = plik.readline().strip().split(", ")
-            return lista
-    except FileNotFoundError:
-        print("Nie znaleziono pliku dla tego trybu.")
-        tworzenie_listy()
+def tworzenie_listy(tryb = "Łatwy", ilosc = 5):
 
-def tworzenie_listy():
-    tryb_gry = input("Wybierz tryb (easy, normal, hard) lub 'exit' by zakończyć: ").lower()
-
-    if tryb_gry == "exit":
-        print("Wyjście z programu")
-        return None
-
-    sciezka = f"../data/{tryb_gry}_level.csv"
+    match tryb:
+        case "Łatwy":
+            tryb = "easy"
+        case "Normalny":
+            tryb = "normal"
+        case "Trudny":
+            tryb = "hard"
+    sciezka = f"../data/{tryb}_level.csv"
 
     try:
         with open(sciezka, "r", encoding="utf-8") as plik:
@@ -278,4 +276,4 @@ def tworzenie_listy():
 
 if __name__ == "__main__":
     root_ = root()
-    root.mainloop()
+    root_.mainloop()
