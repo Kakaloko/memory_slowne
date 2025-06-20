@@ -100,11 +100,13 @@ class root(tk.Tk):
 
         self.clear()
 
-        self.lista_slow = tworzenie_listy(self.level, self.amount)
+        self.word_list = tworzenie_listy(self.level, self.amount)
 
 
-        words = ttk.Label(self.frame,  text=self.lista_slow, font=(10))
-        words.pack()
+        words = tk.Text(self.frame,  height = 4, width = 50)
+        words.config(font= ("Arial", 15))
+        words.insert(tk.END, self.word_list)
+        words.pack(expand=True)
         
         ok_button = ttk.Button(self.frame, text="OK", command= self.write_words)
         ok_button.pack()
@@ -118,7 +120,7 @@ class root(tk.Tk):
         entry_label = ttk.Label(self.frame,  text="Wybierz czas w sekundach", style= "TButton")
         entry_label.pack()
 
-        entry = ttk.Entry(self.frame, textvariable= self.time, style= "TButton", font=(20))
+        entry = ttk.Entry(self.frame, textvariable= self.time, style= "TButton", font=(30))
         entry.pack()
 
         self.level_list = ["Łatwy", "Łatwy", "Średni", "Trudny"] #Nie wiem czemu musi być tak ale dziąła dobrze xD
@@ -137,9 +139,11 @@ class root(tk.Tk):
         self.level = str(self.level.get())
         time_left = int(self.time.get())
 
-        self.lista_slow = tworzenie_listy(self.level)
+        self.word_list = tworzenie_listy(self.level)
 
-        words = ttk.Label(self.frame,  text=self.lista_slow, font=(10))
+        words = tk.Text(self.frame,  height = 4, width = 50)
+        words.config(font= ("Arial", 15))
+        words.insert(tk.END, self.word_list)
         words.pack()
         time_label = ttk.Label(self.frame, text=str(time_left), style= "TButton")
         time_label.pack()
@@ -177,7 +181,7 @@ class root(tk.Tk):
 
     def game_result(self):
         self.clear()
-        porownanie(self.lista_slow, self.answer)
+        porownanie(self.word_list, self.answer)
 
         result_label= ttk.Label(self.frame,  text="Wynik", style= "TButton")
         result_label.pack()
