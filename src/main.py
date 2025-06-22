@@ -258,8 +258,8 @@ def porownanie(wyswietlone, odpowiedz):
     return None
 
 
-def tworzenie_listy(tryb = "Łatwy", ilosc = 5):
-
+def tworzenie_listy(tryb="Łatwy", ilosc=5):
+    # Mapowanie nazw trybów
     match tryb:
         case "Łatwy":
             tryb = "easy"
@@ -267,15 +267,25 @@ def tworzenie_listy(tryb = "Łatwy", ilosc = 5):
             tryb = "normal"
         case "Trudny":
             tryb = "hard"
+
     sciezka = f"../data/{tryb}_level.csv"
 
     try:
         with open(sciezka, "r", encoding="utf-8") as plik:
-            lista = plik.readline().strip().split(", ")
-            return lista
+            # Załaduj wszystkie słowa z pliku
+            zawartosc = plik.read()
+            wszystkie_slowa = [slowo.strip() for slowo in zawartosc.replace('\n', ',').split(',') if slowo.strip()]
+
+            # Losuj `ilosc` słów bez powtórzeń
+            if len(wszystkie_slowa) < ilosc:
+                print("Zbyt mało słów w pliku!")
+                return wszystkie_slowa
+            else:
+                return random.sample(wszystkie_slowa, ilosc)
+
     except FileNotFoundError:
         print("Nie znaleziono pliku dla tego trybu.")
-        tworzenie_listy()
+        return []
 
 
 if __name__ == "__main__":
