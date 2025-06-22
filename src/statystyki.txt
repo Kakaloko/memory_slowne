@@ -1,7 +1,7 @@
 Statystyka                | Wartoœæ
 -------------------------+----------
-Liczba gier               | 20
-Suma punktów              | 16
-Suma b³êdów               | 69
-Œrednie punkty na grê     | 0.80
-Œrednie b³êdy na grê      | 3.45
+Liczba gier               | 24
+Suma punktów              | 23
+Suma b³êdów               | 78
+Œrednie punkty na grê     | 0.96
+Œrednie b³êdy na grê      | 3.25

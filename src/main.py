@@ -41,8 +41,13 @@ class root(tk.Tk):
     def statistics_window(self):
         self.clear()
 
-        with open("../data/stats.txt", encoding="utf-8-sig") as file_stats:
-            stats = [line.strip().split(",") for line in file_stats]
+        stats = []
+        with open(STATS_FILE, encoding="windows-1250") as file_stats:
+            lines = file_stats.readlines()[2:]  # pomijamy nagłówek i separator
+            for line in lines:
+                if "|" in line:
+                    kolumny = [s.strip() for s in line.strip().split("|")]
+                    stats.append(kolumny)
 
         self.frame = tk.Frame(self)
         self.frame.configure(bg="#333446")
