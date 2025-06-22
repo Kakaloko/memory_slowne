@@ -11,7 +11,7 @@ class root(tk.Tk):
     def __init__(self, text="Memory słowne"):
         super().__init__()
         self.title(text)
-        self.geometry("600x600")
+        self.geometry("800x800")
         self.configure(bg="#333446")
         ttk.Style().configure("TButton", 
                                 padding=[10,5,10,5],
@@ -25,7 +25,7 @@ class root(tk.Tk):
         
     def menu_window(self):
         self.clear()
-
+        
         self.frame = tk.Frame(self)
         self.frame.configure(bg="#333446")
 
@@ -61,16 +61,17 @@ class root(tk.Tk):
 
     def game_window(self):
         self.clear()
-       
-
-        mode1_button = ttk.Button(self.frame, text="Na Czas ⏰", style= "TButton",command=self.game_choose_time,)
+        self.amount = 0
+        self.mistake = False
+        self.level = "Łatwy"
+        mode1_button = ttk.Button(self.frame, text="Na Czas ⏰", style= "TButton",command=self.game_choose_time)
         mode1_button.pack()
 
 
         mode2_button = ttk.Button(self.frame, text="Na Ilość 📝", command= self.game_choose_amount)
         mode2_button.pack()
        
-        mode3_button = ttk.Button(self.frame, text="Do pierwszego błedu ❌", style= "TButton",command=self.game_mistake,)
+        mode3_button = ttk.Button(self.frame, text="Do pierwszego błedu ❌", style= "TButton",command=self.game_mistake)
         mode3_button.pack()
 
         
@@ -79,7 +80,6 @@ class root(tk.Tk):
 
     def game_choose_amount(self):
         self.clear()
-       
         self.amount = tk.IntVar()
 
         entry_label = ttk.Label(self.frame,  text="Wybierz ilość słów", style= "TButton", width= 20)
@@ -100,8 +100,9 @@ class root(tk.Tk):
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def game_amount(self):
-        self.level = str(self.level.get())
-        self.amount = int(self.amount.get())
+        if self.mistake == False:
+            self.level = str(self.level.get())
+            self.amount = int(self.amount.get())
 
         self.clear()
 
@@ -114,6 +115,7 @@ class root(tk.Tk):
         words.pack(expand=True)
         
         ok_button = ttk.Button(self.frame, text="OK", command= self.write_words)
+
         ok_button.pack()
 
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
@@ -164,8 +166,26 @@ class root(tk.Tk):
                 time_left -= 1
 
     def game_mistake(self):
-        self.clear()
         
+     
+  
+        self.amount += 1
+        self.mistake = True
+        if (self.amount > 6 and self.level == "Łatwy") or self.level == "Średni" :
+            self.level = "Średni"
+        
+        if (self.amount > 6 and self.level == "Średni") or self.level == "Trudny":
+            self.level = "Trudny"
+        else:
+            self.level = "Łatwy"
+        
+
+        self.game_amount()
+
+  
+        
+
+
  
 
     def write_words(self):
@@ -188,22 +208,41 @@ class root(tk.Tk):
         self.clear()
 
         # Porównaj odpowiedzi i uzyskaj punkty i błędy
-        punkty, bledy = porownanie(self.word_list, self.answer)
+        punkty, bledy = porownanie(self.word_list, str(self.answer.get()))
 
-        # Wyświetl wynik gracza
-        result_label = ttk.Label(
-            self.frame,
-            text=f"Wynik:\n✅ Poprawne: {punkty}\n❌ Błędy: {bledy}",
-            style="TButton"
-        )
-        result_label.pack(pady=10)
-
-        # Przycisk powrotu do menu
-        back_button = ttk.Button(self.frame, text="Wróć do menu", command=self.menu_window)
-        back_button.pack(pady=10)
-
-        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
+        # Wyświetl wynik gracza
+        if self.mistake == False:
+        
+            result_label = ttk.Label(
+                self.frame,
+                text=f"Wynik:\n✅ Poprawne: {punkty}\n❌ Błędy: {bledy}",
+                style="TButton"
+            )
+            result_label.pack(pady=10)
+            back_button = ttk.Button(self.frame, text="Wróć do menu", command=self.menu_window)
+            back_button.pack(pady=10)
+
+            self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+            
+
+        else:
+            result_label = ttk.Label(
+                self.frame,
+                text=f"Przetrwano:\n {self.amount} rundy",
+                style="TButton"
+            )
+            result_label.pack(pady=10)
+             # Przycisk powrotu do menu
+            back_button = ttk.Button(self.frame, text="Wróć do menu", command=self.menu_window)
+            back_button.pack(pady=10)
+
+            self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+  
+        
+        if bledy == 0 :
+            self.game_mistake()
+
     def clear(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -267,7 +306,7 @@ def zapisz_statystyki(punkty, bledy):
 
 
 def porownanie(wyswietlone, odpowiedz_var):
-    odpowiedzi = odpowiedz_var.get().strip().lower().split()
+    odpowiedzi = odpowiedz_var.strip().lower().split()
     odpowiedzi = [s.strip() for s in odpowiedzi if s.strip()]  # usuń puste
 
     # Tworzymy kopię listy wyświetlonych słów (wszystko małymi literami)
