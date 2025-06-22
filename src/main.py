@@ -110,8 +110,8 @@ class root(tk.Tk):
 
 
         words = tk.Text(self.frame,  height = 4, width = 50)
-        words.config(font= ("Arial", 15))
-        words.insert(tk.END, self.word_list)
+        words.insert(tk.END, self.word_list) 
+        words.config(font= ("Arial", 15), state=tk.DISABLED)
         words.pack(expand=True)
         
         ok_button = ttk.Button(self.frame, text="OK", command= self.write_words)
@@ -149,8 +149,8 @@ class root(tk.Tk):
         self.word_list = tworzenie_listy(self.level)
 
         words = tk.Text(self.frame,  height = 4, width = 50)
-        words.config(font= ("Arial", 15))
         words.insert(tk.END, self.word_list)
+        words.config(font= ("Arial", 15), state=tk.DISABLED)
         words.pack()
         time_label = ttk.Label(self.frame, text=str(time_left), style= "TButton")
         time_label.pack()

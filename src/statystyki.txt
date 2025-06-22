@@ -1,7 +1,7 @@
 Statystyka                | Wartość
 -------------------------+----------
-Liczba gier               | 71
-Suma punktów              | 73
-Suma błędów               | 152
+Liczba gier               | 73
+Suma punktów              | 75
+Suma błędów               | 155
 Średnie punkty na grę     | 1.03
-Średnie błędy na grę      | 2.14
+Średnie błędy na grę      | 2.12
