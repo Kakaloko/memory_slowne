@@ -41,7 +41,7 @@ class root(tk.Tk):
     def statistics_window(self):
         self.clear()
 
-        with open("../data/stats.txt", encoding="utf-8") as file_stats:
+        with open("../data/stats.txt", encoding="utf-8-sig") as file_stats:
             stats = [line.strip().split(",") for line in file_stats]
 
         self.frame = tk.Frame(self)
@@ -181,13 +181,21 @@ class root(tk.Tk):
 
     def game_result(self):
         self.clear()
-        porownanie(self.word_list, self.answer)
 
-        result_label= ttk.Label(self.frame,  text="Wynik", style= "TButton")
-        result_label.pack()
-        
-        back_button = ttk.Button(self.frame, text="Wróć", command=self.menu_window)
-        back_button.pack()
+        # Porównaj odpowiedzi i uzyskaj punkty i błędy
+        punkty, bledy = porownanie(self.word_list, self.answer)
+
+        # Wyświetl wynik gracza
+        result_label = ttk.Label(
+            self.frame,
+            text=f"Wynik:\n✅ Poprawne: {punkty}\n❌ Błędy: {bledy}",
+            style="TButton"
+        )
+        result_label.pack(pady=10)
+
+        # Przycisk powrotu do menu
+        back_button = ttk.Button(self.frame, text="Wróć do menu", command=self.menu_window)
+        back_button.pack(pady=10)
 
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
@@ -253,9 +261,29 @@ def zapisz_statystyki(punkty, bledy):
     print(f"- Średnie błędy na grę: {srednie_bledy:.2f}")
 
 
-def porownanie(wyswietlone, odpowiedz):
-    #todo żeby zwracała informacje o ilości błedów i dane do zapisania do statystyk a najlepiej żeby sama wywoływała zapisywanie statystyk
-    return None
+def porownanie(wyswietlone, odpowiedz_var):
+    odpowiedzi = odpowiedz_var.get().strip().lower().split()
+    odpowiedzi = [s.strip() for s in odpowiedzi if s.strip()]  # usuń puste
+
+    # Tworzymy kopię listy wyświetlonych słów (wszystko małymi literami)
+    poprawne_slowa = [s.lower() for s in wyswietlone]
+
+    punkty = 0
+    bledy = 0
+
+    for slowo in odpowiedzi:
+        if slowo in poprawne_slowa:
+            punkty += 1
+            poprawne_slowa.remove(slowo)  # usuwamy, by nie liczyć dwa razy tego samego
+        else:
+            bledy += 1  # słowo nie pasuje
+
+    # Dodaj błędy za pominięte słowa
+    bledy += len(poprawne_slowa) - bledy
+
+    zapisz_statystyki(punkty, bledy)
+
+    return punkty, bledy
 
 
 def tworzenie_listy(tryb="Łatwy", ilosc=5):
