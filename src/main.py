@@ -225,6 +225,7 @@ class root(tk.Tk):
 
             self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
             
+        
 
         else:
             result_label = ttk.Label(
@@ -240,7 +241,7 @@ class root(tk.Tk):
             self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
   
         
-        if bledy == 0 :
+        if bledy == 0 and self.mistake == True:
             self.game_mistake()
 
     def clear(self):
@@ -335,7 +336,7 @@ def tworzenie_listy(tryb="Łatwy", ilosc=5):
     match tryb:
         case "Łatwy":
             tryb = "easy"
-        case "Normalny":
+        case "Średni":
             tryb = "normal"
         case "Trudny":
             tryb = "hard"
